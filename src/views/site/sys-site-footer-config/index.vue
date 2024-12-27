@@ -48,6 +48,7 @@
 
                 <el-table v-loading="loading" :data="sysSiteFooterConfigList" @selection-change="handleSelectionChange">
                     <el-table-column type="selection" width="55" align="center"/>
+                    <el-table-column label="联系标题" prop="title" align="center" />
                     <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
                         <template slot-scope="scope">
                          <el-popconfirm

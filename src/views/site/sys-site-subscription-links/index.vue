@@ -4,7 +4,7 @@
         <template #wrapper>
             <el-card class="box-card">
                 <el-form ref="queryForm" :model="queryParams" :inline="true" label-width="68px">
-                    
+
                     <el-form-item>
                         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
                         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -12,16 +12,16 @@
                 </el-form>
 
                 <el-row :gutter="10" class="mb8">
-                    <el-col :span="1.5">
-                        <el-button
-                                v-permisaction="['site:sysSiteSubscriptionLinks:add']"
-                                type="primary"
-                                icon="el-icon-plus"
-                                size="mini"
-                                @click="handleAdd"
-                        >新增
-                        </el-button>
-                    </el-col>
+<!--                    <el-col :span="1.5">-->
+<!--                        <el-button-->
+<!--                                v-permisaction="['site:sysSiteSubscriptionLinks:add']"-->
+<!--                                type="primary"-->
+<!--                                icon="el-icon-plus"-->
+<!--                                size="mini"-->
+<!--                                @click="handleAdd"-->
+<!--                        >新增-->
+<!--                        </el-button>-->
+<!--                    </el-col>-->
                     <el-col :span="1.5">
                         <el-button
                                 v-permisaction="['site:sysSiteSubscriptionLinks:edit']"
@@ -33,21 +33,22 @@
                         >修改
                         </el-button>
                     </el-col>
-                    <el-col :span="1.5">
-                        <el-button
-                                v-permisaction="['site:sysSiteSubscriptionLinks:remove']"
-                                type="danger"
-                                icon="el-icon-delete"
-                                size="mini"
-                                :disabled="multiple"
-                                @click="handleDelete"
-                        >删除
-                        </el-button>
-                    </el-col>
+<!--                    <el-col :span="1.5">-->
+<!--                        <el-button-->
+<!--                                v-permisaction="['site:sysSiteSubscriptionLinks:remove']"-->
+<!--                                type="danger"-->
+<!--                                icon="el-icon-delete"-->
+<!--                                size="mini"-->
+<!--                                :disabled="multiple"-->
+<!--                                @click="handleDelete"-->
+<!--                        >删除-->
+<!--                        </el-button>-->
+<!--                    </el-col>-->
                 </el-row>
 
                 <el-table v-loading="loading" :data="sysSiteSubscriptionLinksList" @selection-change="handleSelectionChange">
                     <el-table-column type="selection" width="55" align="center"/>
+                    <el-table-column label="订阅平台名称" prop="title" align="center" />
                     <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
                         <template slot-scope="scope">
                          <el-popconfirm
@@ -65,21 +66,21 @@
                            >修改
                            </el-button>
                          </el-popconfirm>
-                         <el-popconfirm
-                            class="delete-popconfirm"
-                            title="确认要删除吗?"
-                            confirm-button-text="删除"
-                            @confirm="handleDelete(scope.row)"
-                         >
-                            <el-button
-                              slot="reference"
-                              v-permisaction="['site:sysSiteSubscriptionLinks:remove']"
-                              size="mini"
-                              type="text"
-                              icon="el-icon-delete"
-                            >删除
-                            </el-button>
-                         </el-popconfirm>
+<!--                         <el-popconfirm-->
+<!--                            class="delete-popconfirm"-->
+<!--                            title="确认要删除吗?"-->
+<!--                            confirm-button-text="删除"-->
+<!--                            @confirm="handleDelete(scope.row)"-->
+<!--                         >-->
+<!--                            <el-button-->
+<!--                              slot="reference"-->
+<!--                              v-permisaction="['site:sysSiteSubscriptionLinks:remove']"-->
+<!--                              size="mini"-->
+<!--                              type="text"-->
+<!--                              icon="el-icon-delete"-->
+<!--                            >删除-->
+<!--                            </el-button>-->
+<!--                         </el-popconfirm>-->
                         </template>
                     </el-table-column>
                 </el-table>
@@ -95,7 +96,7 @@
                 <!-- 添加或修改对话框 -->
                 <el-dialog :title="title" :visible.sync="open" width="500px">
                     <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-                        
+
                                     <el-form-item label="订阅平台名称" prop="title">
                                         <el-input v-model="form.title" placeholder="订阅平台名称"
                                                       />
@@ -121,7 +122,7 @@
 
 <script>
     import {addSysSiteSubscriptionLinks, delSysSiteSubscriptionLinks, getSysSiteSubscriptionLinks, listSysSiteSubscriptionLinks, updateSysSiteSubscriptionLinks} from '@/api/site/sys-site-subscription-links'
-    
+
     export default {
         name: 'SysSiteSubscriptionLinks',
         components: {
@@ -146,14 +147,14 @@
                 // 类型数据字典
                 typeOptions: [],
                 sysSiteSubscriptionLinksList: [],
-                
+
                 // 关系表类型
-                
+
                 // 查询参数
                 queryParams: {
                     pageIndex: 1,
                     pageSize: 10,
-                    
+
                 },
                 // 表单参数
                 form: {
@@ -184,7 +185,7 @@
             // 表单重置
             reset() {
                 this.form = {
-                
+
                 id: undefined,
                 title: undefined,
                 url: undefined,
