@@ -4,7 +4,7 @@
         <template #wrapper>
             <el-card class="box-card">
                 <el-form ref="queryForm" :model="queryParams" :inline="true" label-width="68px">
-                    
+
                     <el-form-item>
                         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
                         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -12,16 +12,16 @@
                 </el-form>
 
                 <el-row :gutter="10" class="mb8">
-                    <el-col :span="1.5">
-                        <el-button
-                                v-permisaction="['site:sysSiteFooterConfig:add']"
-                                type="primary"
-                                icon="el-icon-plus"
-                                size="mini"
-                                @click="handleAdd"
-                        >新增
-                        </el-button>
-                    </el-col>
+<!--                    <el-col :span="1.5">-->
+<!--                        <el-button-->
+<!--                                v-permisaction="['site:sysSiteFooterConfig:add']"-->
+<!--                                type="primary"-->
+<!--                                icon="el-icon-plus"-->
+<!--                                size="mini"-->
+<!--                                @click="handleAdd"-->
+<!--                        >新增-->
+<!--                        </el-button>-->
+<!--                    </el-col>-->
                     <el-col :span="1.5">
                         <el-button
                                 v-permisaction="['site:sysSiteFooterConfig:edit']"
@@ -33,17 +33,17 @@
                         >修改
                         </el-button>
                     </el-col>
-                    <el-col :span="1.5">
-                        <el-button
-                                v-permisaction="['site:sysSiteFooterConfig:remove']"
-                                type="danger"
-                                icon="el-icon-delete"
-                                size="mini"
-                                :disabled="multiple"
-                                @click="handleDelete"
-                        >删除
-                        </el-button>
-                    </el-col>
+<!--                    <el-col :span="1.5">-->
+<!--                        <el-button-->
+<!--                                v-permisaction="['site:sysSiteFooterConfig:remove']"-->
+<!--                                type="danger"-->
+<!--                                icon="el-icon-delete"-->
+<!--                                size="mini"-->
+<!--                                :disabled="multiple"-->
+<!--                                @click="handleDelete"-->
+<!--                        >删除-->
+<!--                        </el-button>-->
+<!--                    </el-col>-->
                 </el-row>
 
                 <el-table v-loading="loading" :data="sysSiteFooterConfigList" @selection-change="handleSelectionChange">
@@ -65,21 +65,21 @@
                            >修改
                            </el-button>
                          </el-popconfirm>
-                         <el-popconfirm
-                            class="delete-popconfirm"
-                            title="确认要删除吗?"
-                            confirm-button-text="删除"
-                            @confirm="handleDelete(scope.row)"
-                         >
-                            <el-button
-                              slot="reference"
-                              v-permisaction="['site:sysSiteFooterConfig:remove']"
-                              size="mini"
-                              type="text"
-                              icon="el-icon-delete"
-                            >删除
-                            </el-button>
-                         </el-popconfirm>
+<!--                         <el-popconfirm-->
+<!--                            class="delete-popconfirm"-->
+<!--                            title="确认要删除吗?"-->
+<!--                            confirm-button-text="删除"-->
+<!--                            @confirm="handleDelete(scope.row)"-->
+<!--                         >-->
+<!--                            <el-button-->
+<!--                              slot="reference"-->
+<!--                              v-permisaction="['site:sysSiteFooterConfig:remove']"-->
+<!--                              size="mini"-->
+<!--                              type="text"-->
+<!--                              icon="el-icon-delete"-->
+<!--                            >删除-->
+<!--                            </el-button>-->
+<!--                         </el-popconfirm>-->
                         </template>
                     </el-table-column>
                 </el-table>
@@ -95,7 +95,7 @@
                 <!-- 添加或修改对话框 -->
                 <el-dialog :title="title" :visible.sync="open" width="500px">
                     <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-                        
+
                                     <el-form-item label="联系标题" prop="title">
                                         <el-input v-model="form.title" placeholder="联系标题"
                                                       />
@@ -109,8 +109,13 @@
                                                       />
                                     </el-form-item>
                                     <el-form-item label="页脚文本内容" prop="text">
-                                        <el-input v-model="form.text" placeholder="页脚文本内容"
-                                                      />
+                                      <el-input
+                                        v-model="form.text"
+                                        placeholder="页脚文本内容"
+                                        type="textarea"
+                                      :autosize="false"
+                                      style="resize: vertical;"
+                                      />
                                     </el-form-item>
                     </el-form>
                     <div slot="footer" class="dialog-footer">
@@ -125,7 +130,7 @@
 
 <script>
     import {addSysSiteFooterConfig, delSysSiteFooterConfig, getSysSiteFooterConfig, listSysSiteFooterConfig, updateSysSiteFooterConfig} from '@/api/site/sys-site-footer-config'
-    
+
     export default {
         name: 'SysSiteFooterConfig',
         components: {
@@ -150,14 +155,14 @@
                 // 类型数据字典
                 typeOptions: [],
                 sysSiteFooterConfigList: [],
-                
+
                 // 关系表类型
-                
+
                 // 查询参数
                 queryParams: {
                     pageIndex: 1,
                     pageSize: 10,
-                    
+
                 },
                 // 表单参数
                 form: {
@@ -188,7 +193,7 @@
             // 表单重置
             reset() {
                 this.form = {
-                
+
                 id: undefined,
                 title: undefined,
                 email: undefined,

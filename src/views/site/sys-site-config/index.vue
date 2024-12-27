@@ -12,16 +12,16 @@
         </el-form>
 
         <el-row :gutter="10" class="mb8">
-          <el-col :span="1.5">
-            <el-button
-              v-permisaction="['site:sysSiteConfig:add']"
-              type="primary"
-              icon="el-icon-plus"
-              size="mini"
-              @click="handleAdd"
-            >新增
-            </el-button>
-          </el-col>
+<!--          <el-col :span="1.5">-->
+<!--            <el-button-->
+<!--              v-permisaction="['site:sysSiteConfig:add']"-->
+<!--              type="primary"-->
+<!--              icon="el-icon-plus"-->
+<!--              size="mini"-->
+<!--              @click="handleAdd"-->
+<!--            >新增-->
+<!--            </el-button>-->
+<!--          </el-col>-->
           <el-col :span="1.5">
             <el-button
               v-permisaction="['site:sysSiteConfig:edit']"
@@ -33,17 +33,17 @@
             >修改
             </el-button>
           </el-col>
-          <el-col :span="1.5">
-            <el-button
-              v-permisaction="['site:sysSiteConfig:remove']"
-              type="danger"
-              icon="el-icon-delete"
-              size="mini"
-              :disabled="multiple"
-              @click="handleDelete"
-            >删除
-            </el-button>
-          </el-col>
+<!--          <el-col :span="1.5">-->
+<!--            <el-button-->
+<!--              v-permisaction="['site:sysSiteConfig:remove']"-->
+<!--              type="danger"-->
+<!--              icon="el-icon-delete"-->
+<!--              size="mini"-->
+<!--              :disabled="multiple"-->
+<!--              @click="handleDelete"-->
+<!--            >删除-->
+<!--            </el-button>-->
+<!--          </el-col>-->
         </el-row>
 
         <el-table v-loading="loading" :data="sysSiteConfigList" @selection-change="handleSelectionChange">
@@ -65,21 +65,21 @@
                 >修改
                 </el-button>
               </el-popconfirm>
-              <el-popconfirm
-                class="delete-popconfirm"
-                title="确认要删除吗?"
-                confirm-button-text="删除"
-                @confirm="handleDelete(scope.row)"
-              >
-                <el-button
-                  slot="reference"
-                  v-permisaction="['site:sysSiteConfig:remove']"
-                  size="mini"
-                  type="text"
-                  icon="el-icon-delete"
-                >删除
-                </el-button>
-              </el-popconfirm>
+<!--              <el-popconfirm-->
+<!--                class="delete-popconfirm"-->
+<!--                title="确认要删除吗?"-->
+<!--                confirm-button-text="删除"-->
+<!--                @confirm="handleDelete(scope.row)"-->
+<!--              >-->
+<!--                <el-button-->
+<!--                  slot="reference"-->
+<!--                  v-permisaction="['site:sysSiteConfig:remove']"-->
+<!--                  size="mini"-->
+<!--                  type="text"-->
+<!--                  icon="el-icon-delete"-->
+<!--                >删除-->
+<!--                </el-button>-->
+<!--              </el-popconfirm>-->
             </template>
           </el-table-column>
         </el-table>
@@ -357,7 +357,7 @@ export default {
     // 添加上传相关方法
     handleUploadSuccess(res, field) {
       if (res.code === 200) {
-        this.form[field] = res.data.url // 根据实际返回格式调整
+        this.form[field] = res.data.full_path // 根据实际返回格式调整
         this.$message.success('上传成功')
       } else {
         this.$message.error(res.msg || '上传失败')
