@@ -7,7 +7,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || 'go-dmin' // page title
+const name = defaultSettings.title || 'THE MODEL' // page title
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
