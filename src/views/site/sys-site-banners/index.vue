@@ -339,7 +339,7 @@
           // 添加上传相关方法
           handleUploadSuccess(res, field) {
             if (res.code === 200) {
-              this.form[field] = res.data.full_path // 根据实际返回格式调整
+              this.form[field] = res.data.path // 根据实际返回格式调整
               this.$message.success('上传成功')
             } else {
               this.$message.error(res.msg || '上传失败')
