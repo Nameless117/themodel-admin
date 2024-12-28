@@ -12,16 +12,16 @@
         </el-form>
 
         <el-row :gutter="10" class="mb8">
-<!--          <el-col :span="1.5">-->
-<!--            <el-button-->
-<!--              v-permisaction="['site:sysSiteConfig:add']"-->
-<!--              type="primary"-->
-<!--              icon="el-icon-plus"-->
-<!--              size="mini"-->
-<!--              @click="handleAdd"-->
-<!--            >新增-->
-<!--            </el-button>-->
-<!--          </el-col>-->
+          <!--          <el-col :span="1.5">-->
+          <!--            <el-button-->
+          <!--              v-permisaction="['site:sysSiteConfig:add']"-->
+          <!--              type="primary"-->
+          <!--              icon="el-icon-plus"-->
+          <!--              size="mini"-->
+          <!--              @click="handleAdd"-->
+          <!--            >新增-->
+          <!--            </el-button>-->
+          <!--          </el-col>-->
           <el-col :span="1.5">
             <el-button
               v-permisaction="['site:sysSiteConfig:edit']"
@@ -33,17 +33,17 @@
             >修改
             </el-button>
           </el-col>
-<!--          <el-col :span="1.5">-->
-<!--            <el-button-->
-<!--              v-permisaction="['site:sysSiteConfig:remove']"-->
-<!--              type="danger"-->
-<!--              icon="el-icon-delete"-->
-<!--              size="mini"-->
-<!--              :disabled="multiple"-->
-<!--              @click="handleDelete"-->
-<!--            >删除-->
-<!--            </el-button>-->
-<!--          </el-col>-->
+          <!--          <el-col :span="1.5">-->
+          <!--            <el-button-->
+          <!--              v-permisaction="['site:sysSiteConfig:remove']"-->
+          <!--              type="danger"-->
+          <!--              icon="el-icon-delete"-->
+          <!--              size="mini"-->
+          <!--              :disabled="multiple"-->
+          <!--              @click="handleDelete"-->
+          <!--            >删除-->
+          <!--            </el-button>-->
+          <!--          </el-col>-->
         </el-row>
 
         <el-table v-loading="loading" :data="sysSiteConfigList" @selection-change="handleSelectionChange">
@@ -65,21 +65,21 @@
                 >修改
                 </el-button>
               </el-popconfirm>
-<!--              <el-popconfirm-->
-<!--                class="delete-popconfirm"-->
-<!--                title="确认要删除吗?"-->
-<!--                confirm-button-text="删除"-->
-<!--                @confirm="handleDelete(scope.row)"-->
-<!--              >-->
-<!--                <el-button-->
-<!--                  slot="reference"-->
-<!--                  v-permisaction="['site:sysSiteConfig:remove']"-->
-<!--                  size="mini"-->
-<!--                  type="text"-->
-<!--                  icon="el-icon-delete"-->
-<!--                >删除-->
-<!--                </el-button>-->
-<!--              </el-popconfirm>-->
+              <!--              <el-popconfirm-->
+              <!--                class="delete-popconfirm"-->
+              <!--                title="确认要删除吗?"-->
+              <!--                confirm-button-text="删除"-->
+              <!--                @confirm="handleDelete(scope.row)"-->
+              <!--              >-->
+              <!--                <el-button-->
+              <!--                  slot="reference"-->
+              <!--                  v-permisaction="['site:sysSiteConfig:remove']"-->
+              <!--                  size="mini"-->
+              <!--                  type="text"-->
+              <!--                  icon="el-icon-delete"-->
+              <!--                >删除-->
+              <!--                </el-button>-->
+              <!--              </el-popconfirm>-->
             </template>
           </el-table-column>
         </el-table>
@@ -107,7 +107,7 @@
                 <el-button type="primary">上传大logo</el-button>
                 <template #tip>
                   <div v-if="form.logoLarge" class="upload-preview">
-                    <img :src="form.logoLarge" class="preview-img">
+                    <img :src="getFullPath(form.logoLarge)" class="preview-img">
                     <div class="image-url">{{ form.logoLarge }}</div>
                   </div>
                 </template>
@@ -125,7 +125,7 @@
                 <el-button type="primary">上传小logo</el-button>
                 <template #tip>
                   <div v-if="form.logoSmall" class="upload-preview">
-                    <img :src="form.logoSmall" class="preview-img">
+                    <img :src="getFullPath(form.logoSmall)" class="preview-img">
                     <div class="image-url">{{ form.logoSmall }}</div>
                   </div>
                 </template>
@@ -143,7 +143,7 @@
                 <el-button type="primary">上传背景图片</el-button>
                 <template #tip>
                   <div v-if="form.bannerBgImg" class="upload-preview">
-                    <img :src="form.bannerBgImg" class="preview-img">
+                    <img :src="getFullPath(form.bannerBgImg)" class="preview-img">
                     <div class="image-url">{{ form.bannerBgImg }}</div>
                   </div>
                 </template>
@@ -161,7 +161,7 @@
                 <el-button type="primary">上传书封面</el-button>
                 <template #tip>
                   <div v-if="form.bannerBook" class="upload-preview">
-                    <img :src="form.bannerBook" class="preview-img">
+                    <img :src="getFullPath(form.bannerBook)" class="preview-img">
                     <div class="image-url">{{ form.bannerBook }}</div>
                   </div>
                 </template>
@@ -188,6 +188,7 @@ export default {
   },
   data() {
     return {
+      baseUrl: process.env.VUE_APP_BASE_API,
       // 设置上传的请求头部
       headers: { 'Authorization': 'Bearer ' + getToken() },
       // 遮罩层
@@ -234,6 +235,12 @@ export default {
     this.getList()
   },
   methods: {
+    getFullPath(path) {
+      if (!path) return ''
+      if (path.startsWith('http')) return path
+
+      return this.baseUrl + '/' + path
+    },
     /** 查询参数列表 */
     getList() {
       this.loading = true
