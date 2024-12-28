@@ -95,7 +95,7 @@
         />
 
         <!-- 添加或修改对话框 -->
-        <el-dialog :title="title" :visible.sync="open" width="600px">
+        <el-dialog :title="title" :visible.sync="open" width="80%">
           <el-form ref="form" :model="form" :rules="rules" label-width="100px">
 
             <el-form-item label="内容类型" prop="type">
@@ -112,11 +112,12 @@
               />
             </el-form-item>
             <el-form-item label="富文本内容" prop="content">
-              <el-input
+              <!-- WangEditor 富文本编辑器 -->
+              <editor
                 v-model="form.content"
-                type="textarea"
-                :rows="2"
-                placeholder="请输入内容"
+                :default-config="editorConfig"
+                :mode="'default'"
+                style="height: 300px; border: 1px solid #ccc"
               />
             </el-form-item>
           </el-form>
@@ -132,10 +133,14 @@
 
 <script>
 import { addSysSiteContent, delSysSiteContent, getSysSiteContent, listSysSiteContent, updateSysSiteContent } from '@/api/site/sys-site-content'
-
+// import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
+import { Editor } from '@wangeditor/editor-for-vue'
+import '@wangeditor/editor/dist/css/style.css' // 引入样式
 export default {
   name: 'SysSiteContent',
   components: {
+    Editor
+    // Toolbar,
   },
   data() {
     return {
@@ -170,7 +175,16 @@ export default {
       form: {
       },
       // 表单校验
-      rules: {}
+      rules: {},
+      editorContent: '<p>欢迎使用 WangEditor！</p>', // 编辑器内容
+      editorConfig: {
+        placeholder: '请输入内容...',
+        MENU_CONF: {
+          uploadImage: {
+            server: process.env.VUE_APP_BASE_API + '/api/v1/public/uploadFile' // 图片上传接口
+          }
+        }
+      }
     }
   },
   created() {
@@ -295,6 +309,10 @@ export default {
         }
       }).catch(function() {
       })
+    },
+    beforeUnmount() {
+    // 销毁编辑器实例
+      this.editor && this.editor.destroy()
     }
   }
 }
