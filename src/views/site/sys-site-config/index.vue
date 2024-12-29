@@ -131,6 +131,10 @@
                 </template>
               </el-upload>
             </el-form-item>
+            <el-form-item label="小Logo跳转地址" prop="logoSmallAddr">
+              <el-input v-model="form.logoSmallAddr" placeholder="小Logo跳转地址"
+              />
+            </el-form-item>
             <el-form-item label="背景图片" prop="bannerBgImg" class="form-item">
               <el-upload
                 class="upload-demo"
@@ -263,6 +267,7 @@ export default {
         id: undefined,
         logoLarge: undefined,
         logoSmall: undefined,
+        logoSmallAddr: undefined,
         bannerBgImg: undefined,
         bannerBook: undefined
       }
