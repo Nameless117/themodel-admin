@@ -1,176 +1,186 @@
 <template>
-  <div class="dashboard-editor-container">
-    <el-row :gutter="12">
-      <el-col :sm="24" :xs="24" :md="6" :xl="6" :lg="6" :style="{ marginBottom: '12px' }">
-        <chart-card title="总销售额" total="￥126,560">
-          <el-tooltip slot="action" class="item" effect="dark" content="指标说明" placement="top-start">
-            <i class="el-icon-warning-outline" />
-          </el-tooltip>
-          <div>
-            <trend flag="top" style="margin-right: 16px;" rate="12">
-              <span slot="term">周同比</span>
-            </trend>
-            <trend flag="bottom" rate="11">
-              <span slot="term">日同比</span>
-            </trend>
-          </div>
-          <template slot="footer">日均销售额<span>￥ 234.56</span></template>
-        </chart-card>
-      </el-col>
-      <el-col :sm="24" :xs="24" :md="6" :xl="6" :lg="6" :style="{ marginBottom: '12px' }">
-        <chart-card title="访问量" :total="8846">
-          <el-tooltip slot="action" class="item" effect="dark" content="指标说明" placement="top-start">
-            <i class="el-icon-warning-outline" />
-          </el-tooltip>
-          <div>
-            <mini-area />
-          </div>
-          <template slot="footer">日访问量<span> {{ '1234' }}</span></template>
-        </chart-card>
-      </el-col>
-      <el-col :sm="24" :xs="24" :md="6" :xl="6" :lg="6" :style="{ marginBottom: '12px' }">
-        <chart-card title="支付笔数" :total="6560">
-          <el-tooltip slot="action" class="item" effect="dark" content="指标说明" placement="top-start">
-            <i class="el-icon-warning-outline" />
-          </el-tooltip>
-          <div>
-            <mini-bar />
-          </div>
-          <template slot="footer">转化率 <span>60%</span></template>
-        </chart-card>
-      </el-col>
-      <el-col :sm="24" :xs="24" :md="6" :xl="6" :lg="6" :style="{ marginBottom: '12px' }">
-        <chart-card title="运营活动效果" total="78%">
-          <el-tooltip slot="action" class="item" effect="dark" content="指标说明" placement="top-start">
-            <i class="el-icon-warning-outline" />
-          </el-tooltip>
-          <div>
-            <mini-progress color="rgb(19, 194, 194)" :target="80" :percentage="78" height="8px" />
-          </div>
-          <template slot="footer">
-            <trend flag="top" style="margin-right: 16px;" rate="12">
-              <span slot="term">同周比</span>
-            </trend>
-            <trend flag="bottom" rate="80">
-              <span slot="term">日环比</span>
-            </trend>
-          </template>
-        </chart-card>
-      </el-col>
-    </el-row>
+  <div class="dashboard-container">
+    <div class="content-wrapper">
+      <!-- Logo区域 -->
+      <!-- <div class="logo-container">
+        <img src="/static/logo.png" alt="Logo" class="logo">
+      </div> -->
 
-    <el-card :bordered="false" :body-style="{padding: '0'}">
-      <div class="salesCard">
-        <el-tabs>
-          <el-tab-pane label="销售额">
-            <el-row>
-              <el-col :xl="16" :lg="12" :md="12" :sm="24" :xs="24">
-                <bar :list="barData" title="销售额排行" />
-              </el-col>
-              <el-col :xl="8" :lg="12" :md="12" :sm="24" :xs="24">
-                <rank-list title="门店销售排行榜" :list="rankList" />
-              </el-col>
-            </el-row>
-          </el-tab-pane>
-          <el-tab-pane label="访问量">
-            <el-row>
-              <el-col :xl="16" :lg="12" :md="12" :sm="24" :xs="24">
-                <bar :list="barData2" title="销售额趋势" />
-              </el-col>
-              <el-col :xl="8" :lg="12" :md="12" :sm="24" :xs="24">
-                <rank-list title="门店销售排行榜" :list="rankList" />
-              </el-col>
-            </el-row>
-          </el-tab-pane>
-        </el-tabs>
+      <!-- 动态文字区域 -->
+      <div class="text-container">
+        <transition name="fade" mode="out-in">
+          <div :key="currentText" class="dynamic-text rainbow-text">
+            {{ currentText }}
+          </div>
+        </transition>
       </div>
-    </el-card>
-
+    </div>
   </div>
 </template>
 
 <script>
-import ChartCard from '@/components/ChartCard'
-import Trend from '@/components/Trend'
-import MiniArea from '@/components/MiniArea'
-import MiniBar from '@/components/MiniBar'
-import MiniProgress from '@/components/MiniProgress'
-import RankList from '@/components/RankList/index'
-import Bar from '@/components/Bar.vue'
-
-const barData = []
-const barData2 = []
-for (let i = 0; i < 12; i += 1) {
-  barData.push({
-    x: `${i + 1}月`,
-    y: Math.floor(Math.random() * 1000) + 200
-  })
-  barData2.push({
-    x: `${i + 1}月`,
-    y: Math.floor(Math.random() * 1000) + 200
-  })
-}
-
-const rankList = []
-for (let i = 0; i < 7; i++) {
-  rankList.push({
-    name: '白鹭岛 ' + (i + 1) + ' 号店',
-    total: 1234.56 - i * 100
-  })
-}
-
 export default {
   name: 'DashboardAdmin',
-  components: {
-    ChartCard,
-    Trend,
-    MiniArea,
-    MiniBar,
-    MiniProgress,
-    RankList,
-    Bar
-  },
   data() {
     return {
-      barData,
-      barData2,
-      rankList
+      texts: [
+        'OVERLOOK INVESTMENTS LIMITED'
+      ],
+      currentTextIndex: 0,
+      timer: null
     }
   },
+  computed: {
+    currentText() {
+      return this.texts[this.currentTextIndex]
+    }
+  },
+  mounted() {
+    this.startTextAnimation()
+  },
+  beforeDestroy() {
+    this.clearTimer()
+  },
   methods: {
+    startTextAnimation() {
+      this.clearTimer()
+
+      this.timer = setInterval(() => {
+        this.currentTextIndex = (this.currentTextIndex + 1) % this.texts.length
+      }, 1000)
+    },
+    clearTimer() {
+      if (this.timer) {
+        clearInterval(this.timer)
+        this.timer = null
+      }
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.dashboard-editor-container {
-  padding: 12px;
-  background-color: rgb(240, 242, 245);
-  position: relative;
+.dashboard-container {
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 
-  .github-corner {
-    position: absolute;
-    top: 0;
-    border: 0;
-    right: 0;
-  }
+  .content-wrapper {
+    text-align: center;
+    width: 100%;
 
-  .chart-wrapper {
-    background: #fff;
-    padding: 16px 16px 0;
-    margin-bottom: 32px;
+    .logo-container {
+      margin-bottom: 60px;
+
+      .logo {
+        width: 300px;
+        height: auto;
+        object-fit: contain;
+      }
+    }
+
+    .text-container {
+      min-height: 30vh;  /* 确保容器至少占屏幕高度的30% */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+
+      .dynamic-text {
+        font-size: min(8vw, 96px);  /* 响应式字体大小，最大96px */
+        font-weight: bold;
+        letter-spacing: 0.1em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        white-space: nowrap;
+        width: 100%;
+        padding: 0 20px;
+      }
+    }
   }
 }
 
-::v-deep .el-tabs__item{
-   padding-left: 16px!important;
-   height: 50px;
-   line-height: 50px;
+.rainbow-text {
+  background: linear-gradient(
+    to right,
+    #ff0000,
+    #ff7f00,
+    #ffff00,
+    #00ff00,
+    #0000ff,
+    #4b0082,
+    #8f00ff
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: rainbow 8s linear infinite;
+  background-size: 200% auto;
 }
 
-@media (max-width:1024px) {
-  .chart-wrapper {
-    padding: 8px;
+@keyframes rainbow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: all 0.8s ease;
+}
+
+.fade-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.dynamic-text {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px) rotateX(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotateX(5deg);
+  }
+  100% {
+    transform: translateY(0px) rotateX(0deg);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .dashboard-container {
+    .content-wrapper {
+      .logo-container {
+        .logo {
+          width: 200px;
+        }
+      }
+
+      .text-container {
+        min-height: 20vh;  /* 在移动端稍微减小高度 */
+
+        .dynamic-text {
+          font-size: min(10vw, 64px);  /* 移动端调整字体大小 */
+        }
+      }
+    }
   }
 }
 </style>
