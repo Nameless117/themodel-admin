@@ -101,6 +101,14 @@
                 </div>
               </div>
             </el-form-item>
+            <el-form-item label="Html内容" prop="htmlContent">
+              <el-input
+                v-model="form.htmlContent"
+                type="textarea"
+                placeholder="请输入 HTML 内容"
+                :autosize="{ minRows: 5, maxRows: 10 }"
+              />
+            </el-form-item>
             <el-form-item v-if="form.type === 'about'" label="附加内容">
               <div v-for="(quote, index) in form.subContent" :key="index">
                 <el-card style="margin-bottom: 10px;">
@@ -451,6 +459,7 @@ export default {
         type: undefined,
         title: undefined,
         content: undefined,
+        htmlContent: undefined,
         subContent: [{ saying: '', author: '' }] // 重置时保持一个空的格言
       }
       this.html = ''
