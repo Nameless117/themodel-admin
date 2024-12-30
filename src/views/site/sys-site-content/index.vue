@@ -101,6 +101,30 @@
                 </div>
               </div>
             </el-form-item>
+            <el-form-item v-if="form.type === 'about'" label="附加内容">
+              <div v-for="(quote, index) in form.subContent" :key="index">
+                <el-card style="margin-bottom: 10px;">
+                  <el-input
+                    v-model="quote.saying"
+                    placeholder="请输入格言"
+                    style="margin-bottom: 10px;"
+                  />
+                  <el-input
+                    v-model="quote.author"
+                    placeholder="请输入作者"
+                  />
+                  <el-button
+                    v-if="form.subContent.length > 1"
+                    type="danger"
+                    style="margin-top: 10px;"
+                    @click="removeQuote(index)"
+                  >删除</el-button>
+                </el-card>
+              </div>
+              <el-button type="primary" @click="addQuote">
+                添加格言
+              </el-button>
+            </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button v-if="html" @click="previewContent">预览</el-button>
@@ -204,7 +228,9 @@ export default {
         }
       },
       // 表单相关数据
-      form: {},
+      form: {
+        subContent: [{ saying: '', author: '' }] // 初始化一个空的格言
+      },
       rules: {
         title: [
           { required: true, message: '请输入内容名称', trigger: 'blur' },
@@ -231,6 +257,20 @@ export default {
     }
   },
   methods: {
+    // 添加新格言
+    addQuote() {
+      if (!this.form.subContent) {
+        this.$set(this.form, 'subContent', [])
+      }
+      this.form.subContent.push({
+        saying: '',
+        author: ''
+      })
+    },
+
+    removeQuote(index) {
+      this.form.subContent.splice(index, 1)
+    },
     // 保持原有的方法
     getList() {
       this.loading = true
@@ -335,7 +375,8 @@ export default {
 
     handleChange(editor) {
       this.form.content = this.html
-      this.currentLength = editor.getLength() - 1
+      // 修改获取长度的方法
+      this.currentLength = this.html.length // 直接使用 html 内容的长度
 
       if (this.currentLength >= this.maxLength) {
         this.$message.warning(`内容长度已达到最大限制 ${this.maxLength} 个字符`)
@@ -343,12 +384,31 @@ export default {
     },
 
     // 修改原有的方法
+    // handleUpdate(row) {
+    //   this.reset()
+    //   const id = row.id || this.ids
+    //   getSysSiteContent(id).then(response => {
+    //     this.form = response.data
+    //     this.html = this.form.content // 设置编辑器内容
+    //     this.open = true
+    //     this.title = '修改站点内容管理'
+    //     this.isEdit = true
+    //   })
+    // },
     handleUpdate(row) {
-      this.reset()
+      this.reset() // 这会初始化一个空的格言数组
       const id = row.id || this.ids
       getSysSiteContent(id).then(response => {
-        this.form = response.data
-        this.html = this.form.content // 设置编辑器内容
+        this.form = {
+          ...response.data,
+          // 确保 subContent 是数组
+          subContent: response.data.subContent
+            ? (typeof response.data.subContent === 'string'
+              ? JSON.parse(response.data.subContent)
+              : response.data.subContent)
+            : [{ saying: '', author: '' }]
+        }
+        this.html = this.form.content
         this.open = true
         this.title = '修改站点内容管理'
         this.isEdit = true
@@ -390,7 +450,8 @@ export default {
         id: undefined,
         type: undefined,
         title: undefined,
-        content: undefined
+        content: undefined,
+        subContent: [{ saying: '', author: '' }] // 重置时保持一个空的格言
       }
       this.html = ''
       if (this.$refs.form) {
@@ -561,6 +622,35 @@ export default {
   .el-progress-bar {
     width: 100%;
   }
+}
+.quote-item {
+  .el-card {
+    margin-bottom: 15px;
+  }
+
+  .el-input {
+    margin-top: 5px;
+  }
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.ml-2 {
+  margin-left: 0.5rem;
+}
+
+.text-gray-500 {
+  color: #909399;
 }
 
 :deep(.w-e-text-container) {
